@@ -6,4 +6,5 @@ You can do multiple searchs at the same time, but if you stops the application y
 
 # Docker command
 dockr build . -t searchapi
+
 docker run -e BASE_URL=https://yourwebsite.com/ -p 4567:4567 --rm searchapi
