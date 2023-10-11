@@ -99,7 +99,11 @@ public class Main {
     //This class will search for all the links in the provided website
     static void getLinks() throws Exception{
         for(int i = 0; i < linksList.size(); i++) {
-            pageMatcher(setConnection(new URL(linksList.get(i)).openConnection()));
+            if(linksList.get(i).contains("https://")){
+                pageMatcher(setConnection(new URL(linksList.get(i)).openConnection()));
+            } else {
+                pageMatcher(setConnection(new URL(linksList.get(i).replace("https:/", "https://")).openConnection()));
+            }
         }
     }
 
@@ -187,10 +191,18 @@ public class Main {
         searchArray.add(urlsListed);
         try {
             for (String url : urls) {
-                connection = new URL(url).openConnection();
-                content = setConnection(connection);
-                if (Pattern.compile(Pattern.quote(string), Pattern.CASE_INSENSITIVE).matcher(Objects.requireNonNull(content)).find()) {
-                    urlsListed.add(url);
+                if(url.contains("https://")){
+                    connection = new URL(url).openConnection();
+                    content = setConnection(connection);
+                    if (Pattern.compile(Pattern.quote(string), Pattern.CASE_INSENSITIVE).matcher(Objects.requireNonNull(content)).find()) {
+                        urlsListed.add(url);
+                    }
+                } else {
+                    connection = new URL(url.replaceAll("https:/", "https://")).openConnection();
+                    content = setConnection(connection);
+                    if (Pattern.compile(Pattern.quote(string), Pattern.CASE_INSENSITIVE).matcher(Objects.requireNonNull(content)).find()) {
+                        urlsListed.add(url.replace("https:/", "https://"));
+                    }
                 }
             }
         } catch (Exception e) {
